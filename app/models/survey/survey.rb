@@ -2,12 +2,6 @@ class Survey::Survey < ActiveRecord::Base
 
   self.table_name = "survey_surveys"
 
-  acceptable_attributes :name, :description,
-    :finished,
-    :active,
-    :attempts_number,
-    :questions_attributes => Survey::Question::AccessibleAttributes
-
   # relations
   has_many :attempts,  :dependent => :destroy
   has_many :questions, :dependent => :destroy

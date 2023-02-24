@@ -1,3 +1,4 @@
+require 'test_helper'
 class SurveyTest < ActiveSupport::TestCase
 
   test "should create a valid survey without questions" do

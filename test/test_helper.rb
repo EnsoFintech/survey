@@ -1,15 +1,15 @@
-  # Configure Rails Envinronment
+# Configure Rails Envinronment
 ENV["RAILS_ENV"] = "test"
 
-require File.expand_path("../dummy/config/environment.rb",  __FILE__)
+require File.expand_path("../dummy/config/environment.rb", __FILE__)
 require "rails/test_help"
-require 'mocha/setup'
+require 'mocha/minitest'
 require 'faker'
 
 Rails.backtrace_cleaner.remove_silencers!
 
 # Run any available migration
-ActiveRecord::Migrator.migrate File.expand_path("../dummy/db/migrate/", __FILE__)
+ActiveRecord::MigrationContext.new(File.expand_path("../dummy/db/migrate/", __FILE__)).migrate
 
 # Load support files
 # Add support to load paths so we can overwrite broken webrat setup

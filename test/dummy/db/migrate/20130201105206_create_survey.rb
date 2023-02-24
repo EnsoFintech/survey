@@ -1,5 +1,5 @@
-class CreateSurvey < ActiveRecord::Migration
-  def self.up
+class CreateSurvey < ActiveRecord::Migration[7.0]
+def self.up
 
     # survey surveys logic
     create_table :survey_surveys do |t|

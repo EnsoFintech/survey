@@ -5,21 +5,21 @@ def create_survey(opts = {})
   Survey::Survey.create({
     :name => ::Faker::Name.name,
     :attempts_number => 3,
-    :description => ::Faker::Lorem.paragraph(1)
+    :description => ::Faker::Lorem.paragraph
   }.merge(opts))
 end
 
 # Create a Survey::Question
 def create_question(opts = {})
   Survey::Question.create({
-    :text =>  ::Faker::Lorem.paragraph(1),
+    :text =>  ::Faker::Lorem.paragraph,
     :options_attributes => {:option => correct_option_attributes}
   }.merge(opts))
 end
 
 # Create a Survey::option but not saved
 def new_option(opts = {})
-  Survey::Option.new(option_attributes.merge(opts))
+  Survey::Option.new
 end
 
 # Create a Survey::Option
@@ -28,7 +28,7 @@ def create_option(opts = {})
 end
 
 def option_attributes
-  { :text => ::Faker::Lorem.paragraph(1) }
+  { :text => ::Faker::Lorem.paragraph }
 end
 
 def correct_option_attributes
@@ -83,9 +83,9 @@ end
 
 # Dummy Model from Dummy Application
 def create_user
-  User.create(:name => Faker::Name.name)
+  User.create(name: Faker::Name.name)
 end
 
 def create_sti_user
-  StiUser.create(:name => Faker::Name.name)
+  StiUser.create(name: Faker::Name.name)
 end

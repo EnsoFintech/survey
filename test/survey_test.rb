@@ -10,8 +10,8 @@ class SurveyTest < ActiveSupport::TestCase
     create_attempt_for(user_a, survey)
     create_attempt_for(user_b, survey, :all => :right)
 
-    assert_not_equal user_b, participant_with_more_wrong_answers(survey)
-    assert_equal user_b, participant_with_more_right_answers(survey)
+    refute_equal user_b.id, participant_with_more_wrong_answers(survey).id
+    assert_equal user_b.id, participant_with_more_right_answers(survey).id
   end
 
   test "should pass if all the users has the same score" do
@@ -19,9 +19,11 @@ class SurveyTest < ActiveSupport::TestCase
     user_b = create_sti_user
     survey = create_survey_with_questions(4)
 
-    create_attempt_for(user_a, survey, :all => :right)
-    create_attempt_for(user_b, survey, :all => :right)
+    att1 = create_attempt_for(user_a, survey, :all => :right)
+    att2 = create_attempt_for(user_b, survey, :all => :right)
 
+    att1.reload
+    att2.reload
     assert_equal participant_score(user_a, survey),
                  participant_score(user_b, survey)
   end

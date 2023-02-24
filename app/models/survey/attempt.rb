@@ -2,11 +2,6 @@ class Survey::Attempt < ActiveRecord::Base
 
   self.table_name = "survey_attempts"
 
-  acceptable_attributes :winner, :survey, :survey_id,
-    :participant,
-    :participant_id,
-    :answers_attributes => ::Survey::Answer::AccessibleAttributes
-
   # relations
   belongs_to :survey
   belongs_to :participant, :polymorphic => true
@@ -16,7 +11,7 @@ class Survey::Attempt < ActiveRecord::Base
 
   # validations
   validates :participant_id, :participant_type, :presence => true
-  validate :check_number_of_attempts_by_survey
+  validate :check_number_of_attempts_by_survey, on: :create
 
   #scopes
   scope :wins,   -> { where(:winner => true) }
@@ -25,11 +20,11 @@ class Survey::Attempt < ActiveRecord::Base
   scope :for_survey, ->(survey) { where(:survey_id => survey.id) }
   scope :exclude_survey,  ->(survey) { where("NOT survey_id = #{survey.id}") }
   scope :for_participant, ->(participant) {
-    where(:participant_id => participant.try(:id), :participant_type => participant.class.base_class)
+    where(:participant_id => participant.try(:id), :participant_type => participant.class.to_s)
   }
 
   # callbacks
-  before_create :collect_scores
+  before_save :collect_scores
 
   def correct_answers
     return self.answers.where(:correct => true)
@@ -40,18 +35,15 @@ class Survey::Attempt < ActiveRecord::Base
   end
 
   def self.high_score
-    return scores.first.score
+    scores.first.score
   end
 
   private
 
   def check_number_of_attempts_by_survey
     attempts = self.class.for_survey(survey).for_participant(participant)
-    upper_bound = self.survey.attempts_number
-
-    if attempts.size >= upper_bound && upper_bound != 0
-      errors.add(:survey_id, "Number of attempts exceeded")
-    end
+    upper_bound = survey.attempts_number
+    errors.add(:survey_id, 'Number of attempts exceeded') if attempts.size >= upper_bound && upper_bound.nonzero?
   end
 
   def collect_scores

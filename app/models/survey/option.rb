@@ -2,8 +2,6 @@ class Survey::Option < ActiveRecord::Base
 
   self.table_name = "survey_options"
 
-  acceptable_attributes :text, :correct, :weight
-
   #relations
   belongs_to :question
 

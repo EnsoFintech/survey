@@ -4,25 +4,21 @@ module Survey
 
     module ClassMethods
       def has_surveys
-        has_many :survey_tentatives, as: :participant, :class_name => ::Survey::Attempt
+        has_many :survey_attempts, as: :participant, class_name: 'Survey::Attempt'
 
-        define_method("for_survey") do |survey|
-          self.survey_tentatives.where(:survey_id => survey.id)
+        define_method('for_survey') do |survey|
+          survey_attempts.where(survey_id: survey.id)
         end
       end
 
-
-      def acceptable_attributes(*args)
-
-        self.const_set('AccessibleAttributes', args + [:id, :_destroy])
-
-        in_rails_3 do
-          if defined?(self.respond_to?(:attr_accessible))
-            attr_accessible(*self.const_get('AccessibleAttributes').map { |k| k.is_a?(Hash) ? k.keys.first : k })
-          end
-        end
-
+      def has_many_surveys
+        has_many :surveys, class_name: 'Survey::Survey'
       end
+
+      def has_one_survey
+        has_one :survey, class_name: 'Survey::Survey'
+      end
+
     end
   end
 end
