@@ -4,7 +4,11 @@ class Survey::Survey < ActiveRecord::Base
 
   # relations
   has_many :attempts,  :dependent => :destroy
-  has_many :questions, :dependent => :destroy
+  has_many :questions,
+           :dependent => :destroy,
+           class_name: 'Survey::Question',
+           foreign_key: :survey_question_id
+
   accepts_nested_attributes_for :questions,
     :reject_if => ->(q) { q[:text].blank? },
     :allow_destroy => true
