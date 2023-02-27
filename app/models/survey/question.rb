@@ -3,7 +3,9 @@ class Survey::Question < ActiveRecord::Base
   self.table_name = "survey_questions"
 
   # relations
-  belongs_to :survey
+  belongs_to :survey,
+             class_name: 'Survey::Survey',
+             foreign_key: "survey_survey_id"
   has_many   :options, :dependent => :destroy
   accepts_nested_attributes_for :options,
     :reject_if => ->(a) { a[:text].blank? },
