@@ -3,11 +3,11 @@ class Survey::Survey < ActiveRecord::Base
   self.table_name = "survey_surveys"
 
   # relations
-  has_many :attempts,  :dependent => :destroy
+  has_many :attempts,
+           :dependent => :destroy
+
   has_many :questions,
-           :dependent => :destroy,
-           class_name: 'Survey::Question',
-           foreign_key: :survey_question_id
+           :dependent => :destroy
 
   accepts_nested_attributes_for :questions,
     :reject_if => ->(q) { q[:text].blank? },
