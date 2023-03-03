@@ -4,6 +4,7 @@ class CreateSurvey < ActiveRecord::Migration
     # survey surveys logic
     create_table :survey_surveys do |t|
       t.string  :name
+      t.string  :slug
       t.text    :description
       t.integer :attempts_number, :default => 0
       t.boolean :finished, :default => false

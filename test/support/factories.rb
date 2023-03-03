@@ -4,6 +4,7 @@
 def create_survey(opts = {})
   Survey::Survey.create({
     :name => ::Faker::Name.name,
+    :slug => name.parameterize,
     :attempts_number => 3,
     :description => ::Faker::Lorem.paragraph
   }.merge(opts))

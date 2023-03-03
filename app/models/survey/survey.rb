@@ -22,6 +22,9 @@ class Survey::Survey < ActiveRecord::Base
   validates :description, :name, :presence => true, :allow_blank => false
   validate  :check_active_requirements
 
+  validates :slug,
+            format: /\A[a-z][\wi\-]*\z/
+
   # returns all the correct options for current surveys
   def correct_options
     return self.questions.map(&:correct_options).flatten
