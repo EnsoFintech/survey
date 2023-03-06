@@ -2,9 +2,10 @@
 
 # Create a Survey::Survey
 def create_survey(opts = {})
+  survey_name = "#{Faker::Games::Pokemon.name} #{Faker::Games::Pokemon.move}"
   Survey::Survey.create({
-    :name => ::Faker::Name.name,
-    :slug => name.parameterize,
+    :name => survey_name,
+    :slug => "#{survey_name.parameterize}-#{Faker::Number.leading_zero_number(digits: 4)}",
     :attempts_number => 3,
     :description => ::Faker::Lorem.paragraph
   }.merge(opts))
@@ -48,6 +49,7 @@ end
 
 def create_survey_with_questions(num)
   survey = create_survey
+  pp survey.inspect
   num.times do
     question = create_question
     num.times do
